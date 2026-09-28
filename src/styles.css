@@ -909,15 +909,12 @@ input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 }
 .hiw-wrap {
   width: 100%;
-  max-width: 1040px;
+  max-width: 1240px;
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 .hiw-anchor {
   scroll-margin-top: calc(var(--header-h) + 24px);
-}
-.hiw-wrap-wide {
-  max-width: 1240px;
 }
 .hiw-card.hiw-example {
   border-color: rgb(49 91 255 / 0.55);

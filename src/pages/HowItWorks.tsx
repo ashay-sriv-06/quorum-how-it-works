@@ -130,7 +130,7 @@ function Example() {
         <h2
           id="hiw-example"
           tabIndex={-1}
-          className="text-[26px] md:text-[32px] font-light tracking-[-0.03em] leading-tight focus:outline-none"
+          className="text-[26px] md:text-[32px] font-light tracking-[-0.03em] leading-tight text-balance focus:outline-none"
         >
           Here’s a $5 workshop that needs three people.
         </h2>
@@ -236,7 +236,7 @@ function Example() {
             <Button
               variant="outline"
               size="sm"
-              className="min-h-12"
+              className="flex-1 sm:flex-none min-h-12"
               data-sim="reset"
               icon={<Icon name="refresh" size={16} />}
               onClick={() => {
@@ -284,7 +284,7 @@ export function HowItWorks() {
     <>
       <div className="hiw">
         {/* Introduction beside the example on desktop; stacked on smaller screens */}
-        <div className="hiw-wrap hiw-wrap-wide pt-10 md:pt-16 pb-16 md:pb-20 grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-10 lg:gap-14 items-start">
+        <div className="hiw-wrap pt-10 md:pt-16 pb-16 md:pb-20 grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-10 lg:gap-14 items-start">
           <section aria-labelledby="hiw-title" className="lg:pt-4">
             <p className="eyebrow text-cobalt-ink">How it works</p>
             <h1
