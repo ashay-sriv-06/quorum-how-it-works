@@ -1,0 +1,7 @@
+/data
+/dist
+/node_modules
+/scripts
+/*.png
+/*.mp4
+/.env*
