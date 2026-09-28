@@ -47,7 +47,7 @@ export function Confirmed() {
   const anchors = [plate.anchors!.a!, plate.anchors!.b!, plate.anchors!.c!];
   const named = e.participants.slice(0, 3);
   const extra = e.participants.length - named.length;
-  const pageUrl = `${window.location.origin}/g/${e.slug}`;
+  const pageUrl = `${window.location.origin}${import.meta.env.BASE_URL}g/${e.slug}`;
 
   return (
     <div className="pb-20">

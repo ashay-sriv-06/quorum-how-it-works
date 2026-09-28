@@ -15,21 +15,10 @@ import type {
   Launch,
   SceneKey,
 } from "../shared/types.js";
-import { zonedToUtc, utcToZoned } from "../shared/time.js";
+import { zonedToUtc } from "../shared/time.js";
+import { DAY, DEMO_EVENT, DEMO_SLUG, FIXTURES, LA, MIN, ORGANIZER, demoStart, headlineFor } from "../shared/fixtures.js";
 
-export const DEMO_SLUG = "portfolio-night";
-const ORGANIZER = "demo-organizer";
-const LA = "America/Los_Angeles";
-const MIN = 60_000;
-const DAY = 24 * 60 * MIN;
-
-/** A short description reads as a headline ("Bring one page. Leave with three edits."); otherwise the title. */
-function headlineFor(title: string, description: string) {
-  const d = description.replace(/\s+/g, " ").trim();
-  if (d.length <= 64) return /[.!?]$/.test(d) ? d : `${d}.`;
-  const first = d.match(/^[^.!?]{3,60}[.!?]/)?.[0];
-  return first ?? (/[.!?]$/.test(title) ? title : `${title}.`);
-}
+export { DEMO_SLUG };
 
 export class ApiError extends Error {
   constructor(
@@ -376,19 +365,6 @@ export function openStore(file: string) {
 
   // ---------------------------------------------------------------- fixtures
 
-  function demoStart(): Date {
-    const fixed = zonedToUtc("2026-09-29", "18:00", LA)!;
-    if (fixed.getTime() > Date.now() + 2 * 60 * MIN) return fixed;
-    // the canonical date has passed: roll to the next 6 PM PT at least 2h out
-    let d = new Date(Date.now() + 2 * 60 * MIN);
-    for (;;) {
-      const { date } = utcToZoned(d, LA);
-      const candidate = zonedToUtc(date, "18:00", LA)!;
-      if (candidate.getTime() > Date.now() + 2 * 60 * MIN) return candidate;
-      d = new Date(d.getTime() + DAY);
-    }
-  }
-
   function resetDemo() {
     const now = Date.now();
     const start = demoStart();
@@ -405,14 +381,14 @@ export function openStore(file: string) {
       ).run(
         id,
         DEMO_SLUG,
-        "AI Portfolio Night",
-        "One seat. A better portfolio.",
-        "Bring your portfolio. Leave with a sharper story. Three people, thirty minutes, honest feedback on the work you’re proudest of.",
+        DEMO_EVENT.title,
+        DEMO_EVENT.headline,
+        DEMO_EVENT.description,
         start.toISOString(),
         LA,
         iso(deadline),
         ORGANIZER,
-        JSON.stringify(["Share your work", "Get honest feedback", "Leave with your next move"]),
+        JSON.stringify(DEMO_EVENT.agenda),
         iso(now - 12 * MIN),
       );
       logActivity(id, "created", "Ashay", now - 12 * MIN);
@@ -425,110 +401,8 @@ export function openStore(file: string) {
 
   function seedFixtures() {
     const now = Date.now();
-    type Fx = {
-      slug: string;
-      title: string;
-      headline: string;
-      description: string;
-      category: Category;
-      date: string;
-      time: string;
-      duration: number;
-      location: string;
-      deadlineDays: number;
-      price: number;
-      min: number;
-      cap: number;
-      status: EventStatus;
-      host: string;
-      scene: SceneKey;
-      agenda: string[];
-      people: string[];
-    };
-    const fixtures: Fx[] = [
-      {
-        slug: "sunday-photo-walk",
-        title: "Sunday Photo Walk",
-        headline: "Six lenses. One city.",
-        description: "A slow two-hour walk through the Financial District at golden hour. Bring any camera; leave with a roll worth printing.",
-        category: "creative",
-        date: "2026-10-04",
-        time: "16:30",
-        duration: 120,
-        location: "San Francisco",
-        deadlineDays: 4,
-        price: 10,
-        min: 6,
-        cap: 6,
-        status: "collecting",
-        host: "Priya N.",
-        scene: "walk",
-        agenda: ["Meet at the cable car turnaround", "Shoot the light as it drops", "Swap favorite frames"],
-        people: ["Theo Park", "Ines Duarte", "Sam Okafor", "Lena Voss"],
-      },
-      {
-        slug: "build-and-brew",
-        title: "Build & Brew",
-        headline: "Ship something before the coffee cools.",
-        description: "Two focused hours of heads-down building with a small table of makers, then ten minutes each to demo.",
-        category: "meetup",
-        date: "2026-10-03",
-        time: "10:00",
-        duration: 120,
-        location: "Oakland",
-        deadlineDays: 3,
-        price: 8,
-        min: 5,
-        cap: 5,
-        status: "collecting",
-        host: "Marcus B.",
-        scene: "brew",
-        agenda: ["Set a two-hour goal", "Build in silence", "Demo to the table"],
-        people: ["Ren Ito", "Dana Wolfe", "Kofi Mensah"],
-      },
-      {
-        slug: "pitch-practice-circle",
-        title: "Pitch Practice Circle",
-        headline: "Say it out loud before it counts.",
-        description: "Four founders, four five-minute pitches, and the kind of feedback you can only get in a small room.",
-        category: "workshop",
-        date: "2026-10-06",
-        time: "19:00",
-        duration: 90,
-        location: "Berkeley",
-        deadlineDays: 5,
-        price: 12,
-        min: 4,
-        cap: 4,
-        status: "collecting",
-        host: "Elena R.",
-        scene: "table",
-        agenda: ["Pitch in five minutes", "Hear what landed", "Rewrite one slide together"],
-        people: ["Omar Haddad", "June Park"],
-      },
-      {
-        slug: "design-crit-club",
-        title: "Design Crit Club",
-        headline: "Three designers. No polite feedback.",
-        description: "A standing monthly crit for product designers. Show one screen you’re stuck on; leave unstuck.",
-        category: "creative",
-        date: "2026-10-01",
-        time: "18:30",
-        duration: 60,
-        location: "Online",
-        deadlineDays: 1,
-        price: 6,
-        min: 3,
-        cap: 3,
-        status: "confirmed",
-        host: "Noah K.",
-        scene: "circle-wide",
-        agenda: ["Show the stuck screen", "Three rounds of crit", "Commit to one change"],
-        people: ["Aria Singh", "Ben Carter", "Mei Tan"],
-      },
-    ];
     tx(() => {
-      for (const f of fixtures) {
+      for (const f of FIXTURES) {
         const id = randomUUID();
         const start = zonedToUtc(f.date, f.time, LA)!;
         let startMs = start.getTime();

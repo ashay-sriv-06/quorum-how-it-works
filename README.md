@@ -33,6 +33,17 @@ Redeploy with `npx vercel deploy` (preview) or `npx vercel deploy --prod`.
 > deploy. For durable shared state, move `server/store.ts` to a Marketplace Postgres (for
 > example Neon). The adapter interface doesn't change.
 
+## Deploy (GitHub Pages)
+
+Live at **https://ashay-sriv-06.github.io/quorum-how-it-works/** (explainer at `/how-it-works`).
+`.github/workflows/pages.yml` runs `npm run build:pages` on every push to `main`.
+
+Pages serves static files only, so that build sets `VITE_STATIC_DEMO=1` and `src/data/adapter.ts`
+uses `src/data/browserStore.ts` instead of `/api`. It applies the same rules and seed data
+(`shared/fixtures.ts`) as `server/store.ts`, but state lives in each visitor's `localStorage`: every
+browser gets its own demo, and "Reset AI Portfolio Night" restores it. `404.html` is a copy of
+`index.html` so deep links such as `/g/portfolio-night` load the app.
+
 ## Demo path
 
 1. `/` — the live card shows 02/03. Choose **Take the third seat**.

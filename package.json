@@ -8,6 +8,7 @@
     "dev:lan": "vite --host",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "build:pages": "tsc -b && VITE_STATIC_DEMO=1 vite build --base=/quorum-how-it-works/ && cp dist/index.html dist/404.html && touch dist/.nojekyll",
     "typecheck": "tsc -b",
     "assets": "python3 scripts/extract_assets.py && python3 scripts/trace_seats.py"
   },

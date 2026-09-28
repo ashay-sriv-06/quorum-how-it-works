@@ -15,7 +15,7 @@ export function CopyInvite({ slug, className = "" }: { slug: string; className?:
       type="button"
       className={`group inline-flex items-center gap-3 min-h-11 text-[15px] text-muted hover:text-text transition-colors duration-150 ${className}`}
       onClick={async () => {
-        if (await copyText(`${window.location.origin}/g/${slug}`)) setCopied(true);
+        if (await copyText(`${window.location.origin}${import.meta.env.BASE_URL}g/${slug}`)) setCopied(true);
       }}
     >
       <span className="relative inline-grid size-[18px]">

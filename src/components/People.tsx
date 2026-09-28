@@ -2,9 +2,9 @@ import type { Participant } from "../../shared/types";
 import { initials } from "../lib/format";
 
 const PHOTOS: Record<string, string> = {
-  "maya chen": "/scenes/avatar-maya.webp",
-  "jordan lee": "/scenes/avatar-jordan.webp",
-  "alex rivera": "/scenes/avatar-alex.webp",
+  "maya chen": `${import.meta.env.BASE_URL}scenes/avatar-maya.webp`,
+  "jordan lee": `${import.meta.env.BASE_URL}scenes/avatar-jordan.webp`,
+  "alex rivera": `${import.meta.env.BASE_URL}scenes/avatar-alex.webp`,
 };
 
 export function Avatar({

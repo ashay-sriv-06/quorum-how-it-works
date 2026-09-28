@@ -216,7 +216,7 @@ function BookingPanel({
   if (initialIds.current === null) initialIds.current = new Set(e.participants.map((x) => x.id));
 
   const mine = joined ? e.participants.find((x) => x.id === joined.commitmentId) : undefined;
-  const pageUrl = `${window.location.origin}/g/${e.slug}`;
+  const pageUrl = `${window.location.origin}${import.meta.env.BASE_URL}g/${e.slug}`;
 
   return (
     <div className="panel-glass relative overflow-hidden p-6 md:p-8 lg:sticky lg:top-[calc(var(--header-h)+16px)]" aria-live="polite">
